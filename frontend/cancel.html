@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cancel Appointment</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h2>Cancel Your Appointment</h2>
+
+    <form onsubmit="cancelAppointment(event)">
+        <label for="appointmentId">Enter Appointment ID:</label>
+        <input type="text" id="appointmentId" required>
+        <button type="submit">Cancel</button>
+    </form>
+
+    <p id="cancelMsg"></p>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
