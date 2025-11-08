@@ -1,23 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Doctor Appointment System</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <h1>Book Your Appointment</h1>
+    <!-- Header -->
+    <header>
+        <img src="images/hospital-logo.png" alt="Hospital Logo" class="logo" />
+        <div class="header-text">
+            <h1>CareWell Multi-Speciality Hospital</h1>
+            <p class="tagline">Your Health, Our Priority</p>
+        </div>
+    </header>
 
-    <div class="form-container">
-        <label for="specialization">Select Specialization:</label>
-        <select id="specialization">
-            <option value="">- Select -</option>
-            <option value="Cardiologist">Cardiologist</option>
-            <option value="Dermatologist">Dermatologist</option>
-            <option value="Orthopedic">Orthopedic</option>
-        </select>
+    <!-- Appointment Form -->
+    <main>
+        <div class="form-container">
+            <h2>Book Your Appointment</h2>
+            <label for="specialization">Select Specialization:</label>
+            <select id="specialization">
+                <option value="">- Select -</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Orthopedic">Orthopedic</option>
+            </select>
+            <button id="findBtn">Find Doctors</button>
+        </div>
 
-        <button onclick="searchDoctors()">Find Doctors</button>
+        <!-- Doctors will render here -->
+        <section id="doctors-list" class="doctors-list"></section>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-card">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-content">
+                <div class="modal-left">
+                    <img id="modal-doctor-img" src="" alt="Doctor Photo">
+                </div>
+                <div class="modal-right">
+                    <h3 id="modal-doctor-name"></h3>
+                    <p id="modal-doctor-spec"></p>
+                    <h4>Select a slot</h4>
+                    <div id="modal-slots" class="modal-slots"></div>
+                    <div class="modal-actions">
+                        <button id="confirm-book" class="confirm-btn" disabled>Confirm Booking</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="js/script.js"></script>
