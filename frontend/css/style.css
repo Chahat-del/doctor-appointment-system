@@ -8,11 +8,13 @@
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
+/* Base */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   color: var(--dark);
   background: var(--light-bg);
+  transition: background 0.3s ease;
 }
 
 /* Navbar */
@@ -35,9 +37,9 @@ body {
 }
 
 .logo {
-  width: 45px;
-  height: 45px;
-  border-radius: 8px;
+  width: 100px;
+  height: 80px;
+  border-radius: 12px;
 }
 
 .brand {
@@ -78,10 +80,36 @@ body {
   border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   display: inline-block;
+  position: relative;
+  overflow: hidden;
 }
-.btn-primary:hover { background: #0059b2; transform: translateY(-3px); }
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease, opacity 0.3s ease;
+}
+
+.btn-primary:active::after {
+  width: 200%;
+  height: 200%;
+  opacity: 0;
+}
+
+.btn-primary:hover {
+  background: #0059b2;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 114, 229, 0.25);
+}
 
 /* Appointment Section */
 .appointment-section {
@@ -111,6 +139,51 @@ select, button {
   border: 1px solid #ccc;
   font-size: 1rem;
   margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Buttons (Find + Book) */
+#findBtn,
+.doctor-card button {
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+#findBtn:hover,
+.doctor-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 114, 229, 0.2);
+}
+
+#findBtn:active,
+.doctor-card button:active {
+  transform: scale(0.98);
+}
+
+/* Ripple effect */
+#findBtn::after,
+.doctor-card button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+#findBtn:active::after,
+.doctor-card button:active::after {
+  width: 220%;
+  height: 220%;
 }
 
 /* Doctor Cards */
@@ -130,7 +203,7 @@ select, button {
   box-shadow: var(--shadow);
   padding: 25px;
   text-align: center;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .doctor-card:hover {
@@ -165,9 +238,13 @@ select, button {
   justify-content: center;
   align-items: center;
   z-index: 200;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
 
 .modal-card {
   background: white;
@@ -177,6 +254,7 @@ select, button {
   box-shadow: var(--shadow);
   padding: 30px;
   position: relative;
+  animation: zoomIn 0.3s ease;
 }
 
 .modal-close {
@@ -201,7 +279,10 @@ select, button {
   object-fit: cover;
 }
 
-.modal-right h3 { color: var(--primary); margin: 0; }
+.modal-right h3 {
+  color: var(--primary);
+  margin: 0;
+}
 
 .modal-right .fee {
   color: var(--gray);
@@ -221,6 +302,7 @@ select, button {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .modal-slot:hover:not(.booked) {
@@ -253,4 +335,63 @@ select, button {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+/* Toast Popup */
+.toast {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  color: #333;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  border-left: 5px solid #4CAF50;
+  animation: fadeIn 0.4s ease, fadeOut 0.5s ease 3.5s forwards;
+  z-index: 9999;
+}
+
+.toast.cancel {
+  border-left-color: #e53935;
+}
+
+.toast img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.toast .toast-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.toast .toast-text strong {
+  color: #111;
+}
+
+.toast .toast-text small {
+  color: #555;
+  margin-top: 2px;
+  font-size: 0.85rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(20px); }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }

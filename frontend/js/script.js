@@ -1,3 +1,4 @@
+// === Doctor Data ===
 const doctorsDB = {
   Cardiologist: [
     { id: "c1", name: "Dr. Rajesh Kumar", exp: "15 years", fee: 600, img: "images/doctor1.jpg" },
@@ -13,10 +14,12 @@ const doctorsDB = {
   ],
 };
 
+// === Default Slots ===
 const defaultSlots = ["09:00 AM", "09:30 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:30 PM"];
 const STORAGE_KEY = "appointments_v3";
 let bookings = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
+// === Render Doctors ===
 function renderDoctors(spec) {
   const container = document.getElementById("doctors-list");
   container.innerHTML = "";
@@ -45,6 +48,7 @@ document.getElementById("findBtn").addEventListener("click", () => {
   renderDoctors(spec);
 });
 
+// === Modal Logic ===
 const modal = document.getElementById("booking-modal");
 const closeBtn = document.getElementById("modal-close");
 const confirmBtn = document.getElementById("confirm-book");
@@ -103,25 +107,54 @@ function isBooked(id, slot) {
   return bookings[id]?.includes(slot);
 }
 
+// === Beautiful Toast Notification ===
+function showToast(message, img, subtext = "", type = "success") {
+  const toast = document.createElement("div");
+  toast.className = "toast" + (type === "cancel" ? " cancel" : "");
+  toast.innerHTML = `
+    <img src="${img}" alt="Doctor">
+    <div class="toast-text">
+      <strong>${message}</strong>
+      <small>${subtext}</small>
+    </div>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 4000);
+}
+
+// === Booking Logic ===
 confirmBtn.addEventListener("click", () => {
   if (!selectedSlot) return;
   const id = currentDoctor.id;
   if (!bookings[id]) bookings[id] = [];
   if (!bookings[id].includes(selectedSlot)) bookings[id].push(selectedSlot);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
-  alert(`✅ Appointment booked with ${currentDoctor.name} at ${selectedSlot}`);
+
+  showToast(
+    `Appointment Confirmed`,
+    currentDoctor.img,
+    `${currentDoctor.name} • ${selectedSlot} • ₹${currentDoctor.fee}`,
+    "success"
+  );
   closeModal();
 });
 
+// === Cancel Single Slot ===
 function cancelSlot(id, slot) {
   if (confirm(`Cancel appointment at ${slot}?`)) {
     bookings[id] = bookings[id].filter((s) => s !== slot);
     if (bookings[id].length === 0) delete bookings[id];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
-    alert("❌ Appointment cancelled successfully.");
+    showToast(
+      `Appointment Cancelled`,
+      currentDoctor.img,
+      `${currentDoctor.name} • ${slot}`,
+      "cancel"
+    );
     openModal(id, currentDoctor.spec);
   }
 }
 
+// === Modal Close ===
 closeBtn.addEventListener("click", closeModal);
 modal.addEventListener("click", (e) => e.target === modal && closeModal());
